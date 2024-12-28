@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderMS.WebAPI", "OrderMS.WebAPI\OrderMS.WebAPI.csproj", "{C6D0C85D-D009-49D1-B938-7983D3773730}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B94107B1-CC77-49D8-9E4C-52C176B1D4E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A809C058-F004-4E87-A975-8E61F2416361}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{640E0656-9ECD-492D-B8D6-D5EE37DE40BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderMS.Application", "OrderMS.Application\OrderMS.Application.csproj", "{5642A97E-A5DB-4DAE-A6D1-B52156134F63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderMS.Domain", "OrderMS.Domain\OrderMS.Domain.csproj", "{EED861D0-BB76-4D71-800A-80A31C6E6A27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderMS.Persistence", "OrderMS.Persistance\OrderMS.Persistence.csproj", "{621E8EBA-0CD2-4D81-9722-7BEE5208AB40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6D0C85D-D009-49D1-B938-7983D3773730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6D0C85D-D009-49D1-B938-7983D3773730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6D0C85D-D009-49D1-B938-7983D3773730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6D0C85D-D009-49D1-B938-7983D3773730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5642A97E-A5DB-4DAE-A6D1-B52156134F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5642A97E-A5DB-4DAE-A6D1-B52156134F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5642A97E-A5DB-4DAE-A6D1-B52156134F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5642A97E-A5DB-4DAE-A6D1-B52156134F63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EED861D0-BB76-4D71-800A-80A31C6E6A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EED861D0-BB76-4D71-800A-80A31C6E6A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EED861D0-BB76-4D71-800A-80A31C6E6A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EED861D0-BB76-4D71-800A-80A31C6E6A27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{621E8EBA-0CD2-4D81-9722-7BEE5208AB40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{621E8EBA-0CD2-4D81-9722-7BEE5208AB40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{621E8EBA-0CD2-4D81-9722-7BEE5208AB40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{621E8EBA-0CD2-4D81-9722-7BEE5208AB40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C6D0C85D-D009-49D1-B938-7983D3773730} = {B94107B1-CC77-49D8-9E4C-52C176B1D4E3}
+		{5642A97E-A5DB-4DAE-A6D1-B52156134F63} = {640E0656-9ECD-492D-B8D6-D5EE37DE40BB}
+		{EED861D0-BB76-4D71-800A-80A31C6E6A27} = {640E0656-9ECD-492D-B8D6-D5EE37DE40BB}
+		{621E8EBA-0CD2-4D81-9722-7BEE5208AB40} = {A809C058-F004-4E87-A975-8E61F2416361}
+	EndGlobalSection
+EndGlobal
