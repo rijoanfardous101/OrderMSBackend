@@ -48,6 +48,7 @@ builder.Services.AddDbContext<OrderMSDbContext>(options => options.UseSqlServer(
 
 builder.Services.AddScoped<ITokenRepository, TokenService>();
 builder.Services.AddScoped<ICompanyRepository, CompanyService>();
+builder.Services.AddScoped<IProductRepository, ProductService>();
 
 
 builder.Services.AddIdentityCore<ApplicationUser>()
