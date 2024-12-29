@@ -13,6 +13,7 @@ using OrderMS.Domain.Entities;
 
 using OrderMS.Persistence.Services;
 using OrderMS.Persistence.DatabaseContext;
+using OrderMS.WebAPI.Middlewares;
 
 
 
@@ -91,6 +92,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandlerMiddleware();
 
 app.UseHsts();
 app.UseHttpsRedirection();
