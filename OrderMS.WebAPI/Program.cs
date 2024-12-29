@@ -1,10 +1,20 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using OrderMS.Persistence.DatabaseContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+using Microsoft.OpenApi.Models;
+using Asp.Versioning;
+
+using OrderMS.Application.Interfaces;
 using OrderMS.Domain.Entities;
+
+using OrderMS.Persistence.Services;
+using OrderMS.Persistence.DatabaseContext;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +22,31 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+})
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'V";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
+
+builder.Services.AddSwaggerGen(
+    options => options.SwaggerDoc("v1", new OpenApiInfo{ Title = "OrderMS.WebAPI", Version = "v1"})
+);
 
 builder.Services.AddDbContext<OrderMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OrderMSConnectionString")));
 
+
+builder.Services.AddScoped<ITokenRepository, TokenService>();
+builder.Services.AddScoped<ICompanyRepository, CompanyService>();
 
 
 builder.Services.AddIdentityCore<ApplicationUser>()
@@ -34,8 +65,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 1;
 });
 
+
 var jwtKey = builder.Configuration[ "Jwt:Key" ]
     ?? throw new InvalidOperationException("JWT Key is not configured.");
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()
 {
@@ -59,8 +92,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
