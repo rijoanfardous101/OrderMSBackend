@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderMS.Application.DTOs
+namespace OrderMS.Application.DTOs.UserDTOs
 {
     public class LoginReqDTO
     {

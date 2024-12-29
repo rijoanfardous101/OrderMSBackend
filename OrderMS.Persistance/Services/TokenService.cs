@@ -31,7 +31,9 @@ namespace OrderMS.Persistence.Services
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim("CompanyId", user.CompanyId.ToString()),
             };
 
             foreach (var role in roles)

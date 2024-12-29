@@ -4,23 +4,25 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OrderMS.Domain.Enums;
 
-namespace OrderMS.Application.DTOs
+namespace OrderMS.Application.DTOs.UserDTOs
 {
-    public class SignupReqDTO
+    public class CreateUserReqDTO
     {
         [Required]
-        [StringLength(100, MinimumLength = 4)]
-        public string CompanyName { get; set; } = string.Empty;
+        [StringLength(100)]
+        public string UserName { get; set; } = string.Empty;
 
         [Required]
-        //[DataType(DataType.EmailAddress)]
         [EmailAddress]
-        public string EmailAddress {  get; set; } = string.Empty;
+        public string EmailAddress { get; set; } = string.Empty;
 
         [Required]
-        [DataType (DataType.Password)]
         [MinLength(6)]
         public string Password { get; set; } = string.Empty;
+
+        [Required]
+        public string Role { get; set; } = string.Empty;
     }
 }

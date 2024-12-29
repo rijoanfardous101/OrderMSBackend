@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OrderMS.Application.DTOs;
+﻿using OrderMS.Application.DTOs.CompanyDTOs;
+using OrderMS.Application.DTOs.UserDTOs;
+using OrderMS.Domain.Entities;
 
 namespace OrderMS.Application.Interfaces
 {
@@ -15,5 +12,10 @@ namespace OrderMS.Application.Interfaces
         /// <param name="signupReqDTO"></param>
         /// <returns></returns>
         public Task<Guid> CreateCompanyAsync(SignupReqDTO signupReqDTO);
+
+        public Task<Company?> GetCompanyById(Guid cId);
+
+        public Task<Company?> UpdateCompanyInfoAsync(ChangeCompanyInfoReqDTO reqDTO, Guid companyId);
+
     }
 }

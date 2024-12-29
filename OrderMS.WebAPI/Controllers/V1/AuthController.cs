@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Data;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OrderMS.Application.DTOs;
+using OrderMS.Application.DTOs.UserDTOs;
 using OrderMS.Application.Interfaces;
 using OrderMS.Domain.Entities;
 using OrderMS.WebAPI.Controllers.V1.Base;
@@ -58,32 +61,60 @@ namespace OrderMS.WebAPI.Controllers.V1
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginReqDTO loginReqDTO)
         {
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
+
+            // Checking if user exists.
             var user = await _userManager.FindByEmailAsync(loginReqDTO.EmailAddress);
+            if (user == null)
+                return BadRequest("Email/Password incorrect.");
 
-            if (user != null)
+            // Checking if Password is correct.
+            var isPassCorrect = await _userManager.CheckPasswordAsync(user, loginReqDTO.Password);
+            if (!isPassCorrect)
+                return BadRequest("Email/Password incorrect.");
+
+            // Get roles for the user
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles == null || !roles.Any())
+                return Unauthorized("User does not have any roles assigned.");
+
+            // Generate JWT token
+            var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
+
+            // Return response
+            var loginResDTO = new LoginResDTO
             {
-                var isPassCorrect = await _userManager.CheckPasswordAsync(user, loginReqDTO.Password);
+                JwtToken = jwtToken,
+            };
 
-                if (isPassCorrect)
-                {
-                    var roles = await _userManager.GetRolesAsync(user);
+            return Ok(loginResDTO);
+        }
 
-                    if (roles != null)
-                    {
-                        var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
 
-                        var loginResDTO = new LoginResDTO()
-                        {
-                            JwtToken = jwtToken,
-                        };
+        [Route("ChangePassword")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePassReqDTO changePassReqDTO)
+        {
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
 
-                        return Ok(loginResDTO);
-                    }
 
-                }
-            }
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
 
-            return BadRequest("Email/Passowrd incorrect.");
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return Unauthorized();
+
+            var response = await _userManager.ChangePasswordAsync(user, changePassReqDTO.CurrentPassword, changePassReqDTO.NewPassword);
+
+            if (!response.Succeeded)
+                return BadRequest("Incorrect Password");
+
+            return Ok("Password Changed Successfully.");
         }
     }
 }
