@@ -12,7 +12,7 @@ using OrderMS.Persistence.DatabaseContext;
 namespace OrderMS.Persistence.Migrations
 {
     [DbContext(typeof(OrderMSDbContext))]
-    [Migration("20241228165513_Initial")]
+    [Migration("20241231074506_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -329,11 +329,13 @@ namespace OrderMS.Persistence.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("TotalAmount")
                         .HasColumnType("real");

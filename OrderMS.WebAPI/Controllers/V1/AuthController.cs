@@ -25,6 +25,33 @@ namespace OrderMS.WebAPI.Controllers.V1
             _tokenRepository = tokenRepository;
         }
 
+        [HttpPost]
+        [Route("Check")]
+        public async Task<IActionResult> CheckAuth()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return BadRequest();
+
+            // Get roles for the user
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles == null || !roles.Any())
+                return Unauthorized("User does not have any roles assigned.");
+
+            var loginResDTO = new AuthSuccesResDTO
+            {
+                EmailAddress = user.Email,
+                Role = roles[0]
+            };
+
+            return Ok(loginResDTO);
+        }
+
 
         [HttpPost]
         [Route("Signup")]
@@ -50,11 +77,30 @@ namespace OrderMS.WebAPI.Controllers.V1
 
                 if (result.Succeeded)
                 {
-                    return Ok("Account Created Successfully! Please Login.");
+                    var user = await _userManager.FindByEmailAsync(signupReqDTO.EmailAddress);
+                    if (user == null)
+                        return BadRequest();
+
+                    var jwtToken = _tokenRepository.CreateJWTToken(user, new List<string> { "Admin"});
+
+                    var signupResDTO = new AuthSuccesResDTO
+                    {
+                        JwtToken = jwtToken,
+                        EmailAddress = signupReqDTO.EmailAddress,
+                        Role = "Admin"
+                    };
+
+                    return Ok(signupResDTO);
                 }
             }
 
-            return BadRequest("Something went wrong. Please try again.");
+            _companyService.DeleteCompanyById(companyId);
+
+            var error = result.Errors.ToList()[ 0 ];
+            if (error.Code == "DuplicateUserName")
+                return BadRequest("User already exists");
+
+            return BadRequest(error.Description);
         }
 
         [HttpPost]
@@ -83,9 +129,11 @@ namespace OrderMS.WebAPI.Controllers.V1
             var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
 
             // Return response
-            var loginResDTO = new LoginResDTO
+            var loginResDTO = new AuthSuccesResDTO
             {
                 JwtToken = jwtToken,
+                EmailAddress = loginReqDTO.EmailAddress,
+                Role = roles[ 0 ]
             };
 
             return Ok(loginResDTO);

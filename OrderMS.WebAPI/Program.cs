@@ -49,6 +49,22 @@ builder.Services.AddDbContext<OrderMSDbContext>(options => options.UseSqlServer(
 builder.Services.AddScoped<ITokenRepository, TokenService>();
 builder.Services.AddScoped<ICompanyRepository, CompanyService>();
 builder.Services.AddScoped<IProductRepository, ProductService>();
+builder.Services.AddScoped<IOrderRepository, OrderService>();
+
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? throw new ArgumentNullException("Origins not setup");
+
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder
+        .WithOrigins(allowedOrigins)
+        .AllowCredentials()
+        .WithHeaders("Authorization", "origin", "accept", "content-type")
+        .WithMethods("GET", "POST", "PUT", "DELETE")
+        ;
+    });
+});
+
 
 
 builder.Services.AddIdentityCore<ApplicationUser>()
@@ -100,6 +116,7 @@ app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

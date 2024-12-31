@@ -17,5 +17,7 @@ namespace OrderMS.Application.Interfaces
 
         public Task<Company?> UpdateCompanyInfoAsync(ChangeCompanyInfoReqDTO reqDTO, Guid companyId);
 
+        public void DeleteCompanyById(Guid cId);
+
     }
 }

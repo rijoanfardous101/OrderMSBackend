@@ -65,7 +65,7 @@ namespace OrderMS.Persistence.Services
 
         public async Task<ProductResDTO?> UpdateProductAsync(ProductAddUpdateReqDTO reqDTO, Guid productId, Guid companyId)
         {
-            var product = await GetProductByIdAsync(productId);
+            var product = await _dbContext.Products.FindAsync(productId);
 
             if (product == null || product.CompanyId != companyId)
                 return null;
@@ -75,9 +75,10 @@ namespace OrderMS.Persistence.Services
             product.Price = reqDTO.Price;
             product.StockQuantity = reqDTO.StockQuantity;
 
+            //_dbContext.Products.Update(product);
             await _dbContext.SaveChangesAsync();
 
-            return product;
+            return ToProductResDTO(product);
         }
 
         public static ProductResDTO ToProductResDTO(Product product)

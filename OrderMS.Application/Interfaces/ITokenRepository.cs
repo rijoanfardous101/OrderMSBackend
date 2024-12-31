@@ -12,5 +12,6 @@ namespace OrderMS.Application.Interfaces
         /// <param name="roles"></param>
         /// <returns></returns>
         string CreateJWTToken(ApplicationUser user, List<string> roles);
+
     }
 }

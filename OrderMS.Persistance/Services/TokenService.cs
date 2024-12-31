@@ -61,7 +61,7 @@ namespace OrderMS.Persistence.Services
                 issuer,
                 audience,
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(30),
+                expires: DateTime.UtcNow.AddDays(1),
                 signingCredentials: credentials
             );
 

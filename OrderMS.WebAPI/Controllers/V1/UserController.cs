@@ -62,7 +62,8 @@ namespace OrderMS.WebAPI.Controllers.V1
                 }
             }
 
-            return BadRequest("Something went wrong. Please try again.");
+            ModelState.AddModelError("Error", "Something went wrong!");
+            return ValidationProblem(ModelState);
         }
 
 

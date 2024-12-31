@@ -32,6 +32,17 @@ namespace OrderMS.Persistence.Services
             return company.CompanyId;
         }
 
+        public async void DeleteCompanyById(Guid cId)
+        {
+            var company = await GetCompanyById(cId);
+
+            if (company == null)
+                return;
+
+            _dbContext.Companies.Remove(company);
+            _dbContext.SaveChanges();
+        }
+
         public async Task<Company?> GetCompanyById(Guid cId)
         {
             return await _dbContext.Companies.FindAsync(cId);
